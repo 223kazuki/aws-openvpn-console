@@ -1,0 +1,30 @@
+{:duct.core/project-ns  open-vpn-console
+ :duct.core/environment :production
+ :duct.module/logging {}
+ :duct.module.web/api {}
+ :duct.middleware.web/defaults
+ {:cookies true
+  :session {:flash true
+            :cookie-attrs {:http-only true, :same-site :strict}}
+  :static {:resources ["open_vpn_console/public"]}}
+ :duct.module/cljs {:main open-vpn-console.client}
+
+ :duct.module/ataraxy
+ {"/api" ;^:wrap-auth
+  {[:get "/instances"] [:api/instances]}
+  [:post "/login" {params :body-params}] [:api/login params]
+  [:get  "/logout"] [:logout]
+  [:get] [:index]}
+
+ :open-vpn-console.middleware/auth-backend {}
+ :open-vpn-console.middleware/wrap-auth
+ {:auth-backend #ig/ref :open-vpn-console.middleware/auth-backend}
+
+ :open-vpn-console.boundary.aws/ec2 {:access-key #duct/env ["AWS_ACCESS_KEY"]
+                                     :secret-key #duct/env ["AWS_SECRET_KEY"]
+                                     :endpoint #duct/env ["AWS_ENDPOINT"]}
+
+ :open-vpn-console.handler.api/login {}
+ :open-vpn-console.handler.api/instances {:ec2 #ig/ref :open-vpn-console.boundary.aws/ec2}
+ :open-vpn-console.handler/logout {}
+ :open-vpn-console.handler/index {}}
