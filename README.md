@@ -14,6 +14,13 @@ export AWS_SECRET_KEY=xxxxxxxxxxxxx
 export AWS_ENDPOINT=ap-northeast-1
 ```
 
+and you have to add following files.
+
+resources/openvpn/ca.crt
+resources/openvpn/client1.crt
+resources/openvpn/client1.key
+resources/openvpn/ta.key
+
 ## Developing
 
 ### Setup
