@@ -12,6 +12,8 @@ And this cred nedds to be able to operate on EC2.
 export AWS_ACCESS_KEY=xxxxxxxxxxxxx
 export AWS_SECRET_KEY=xxxxxxxxxxxxx
 export AWS_ENDPOINT=ap-northeast-1
+export LOGIN_EMAIL=xxxx@example.com
+export LOGIN_PASSWORD=xxxxxxxx
 ```
 
 and you have to add following files.

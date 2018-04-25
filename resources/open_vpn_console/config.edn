@@ -10,9 +10,10 @@
  :duct.module/cljs {:main open-vpn-console.client}
 
  :duct.module/ataraxy
- {"/api" ^:wrap-auth {[:get  "/instances"] [:api/instances]
-                      [:post "/instances/" instance-id "/" operation] [:api/operate-instance instance-id operation]
-                      [:post "/instances/" instance-id "/openvpn/download"] [:api/download-openvpn-file instance-id]}
+ {"/api" ^:wrap-auth
+  {[:get  "/instances"] [:api/instances]
+   [:post "/instances/" instance-id "/" operation] [:api/operate-instance instance-id operation]
+   [:post "/instances/" instance-id "/openvpn/download"] [:api/download-openvpn-file instance-id]}
   [:post "/login" {params :body-params}] [:api/login params]
   [:get  "/logout"] [:logout]
   [:get] [:index]}
@@ -25,7 +26,8 @@
                                      :secret-key #duct/env ["AWS_SECRET_KEY"]
                                      :endpoint #duct/env ["AWS_ENDPOINT"]}
 
- :open-vpn-console.handler.api/login {}
+ :open-vpn-console.handler.api/login {:login-email #duct/env ["LOGIN_EMAIL"]
+                                      :login-password #duct/env ["LOGIN_PASSWORD"]}
  :open-vpn-console.handler.api/instances {:ec2 #ig/ref :open-vpn-console.boundary.aws/ec2}
  :open-vpn-console.handler.api/operate-instance {:ec2 #ig/ref :open-vpn-console.boundary.aws/ec2}
  :open-vpn-console.handler.api/download-openvpn-file {:ec2 #ig/ref :open-vpn-console.boundary.aws/ec2}

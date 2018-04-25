@@ -39,6 +39,9 @@
 (defmethod ig/init-key :open-vpn-console.boundary.aws/ec2 [_ {:keys [access-key
                                                                      secret-key
                                                                      endpoint]}]
+  (when-not (and access-key secret-key endpoint)
+    (throw (Exception. (str "Initialization error."
+                            "You have to set AWS_ACCESS_KEY, AWS_SECRET_KEY and AWS_ENDPOINT  as environment variables."))))
   (map->EC2 {:access-key access-key
              :secret-key secret-key
              :endpoint endpoint}))

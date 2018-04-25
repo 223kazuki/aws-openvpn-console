@@ -10,11 +10,14 @@
             [clojure.string :as str]
             [ring.util.response :refer [file-response]]))
 
-(defmethod ig/init-key ::login [_ options]
+(defmethod ig/init-key ::login [_ {:keys [login-email login-password]}]
+  (when-not (and login-email login-password)
+    (throw (Exception. (str "Initialization error."
+                            "You have to set LOGIN_EMAIL and LOGIN_PASSWORD as environment variables."))))
   (fn [{[_ params] :ataraxy/result}]
     (let [{:keys [email password]} params]
-      (if (and (= email "test@example.com")
-               (= password "password"))
+      (if (and (= email login-email)
+               (= password login-password))
         {:status 200
          :session {:identity email}
          :body {:message "Login suceed."}}
