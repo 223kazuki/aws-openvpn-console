@@ -42,7 +42,6 @@
 (re-frame/reg-event-db
  ::login-post-fail
  (fn [db v]
-   (println (second v))
    (let [message (get-in (second v) [:response :message])]
      (assoc db
             :loading false

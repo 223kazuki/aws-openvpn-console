@@ -46,7 +46,7 @@
         (->> ["ca.crt" "client1.crt" "client1.key" "ta.key" "myvpn.ovpn.template"]
              (map #(str "openvpn/" %))
              (map io/resource)
-             (filter #(.exists (io/file %)))
+             (filter identity)
              (map (fn [r]
                     (if (str/ends-with? (.getAbsolutePath (io/file r)) ".template")
                       (let [out (io/file (fs/tmpdir) (str/join "." (butlast (str/split (.getName (io/file r)) #"\."))))]
