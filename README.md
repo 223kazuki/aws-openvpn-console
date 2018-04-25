@@ -44,6 +44,10 @@ heroku git:remote -a FIXME
 
 [heroku]: https://www.heroku.com/
 
+or
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ### Environment
 
 To begin developing, start with a REPL.
