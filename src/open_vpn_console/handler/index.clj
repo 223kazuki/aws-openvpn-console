@@ -10,7 +10,10 @@
 
 (defmethod ig/init-key :open-vpn-console.handler/logout [_ options]
   (fn [{[_] :ataraxy/result}]
-    [::response/found "/login"]))
+    {:status  302
+     :headers {"Location" "/login"}
+     :session nil
+     :body    ""}))
 
 (defmethod ig/init-key :open-vpn-console.handler/index [_ options]
   (fn [{[_] :ataraxy/result}]

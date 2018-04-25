@@ -80,7 +80,9 @@
             [sa/Container
              [sa/MenuItem {:as "a" :header true  :href "/"}
               "Opne VPN Console"]
-             [sa/MenuItem {:as "a" :href "/about"} "使い方"]]]
+             [sa/MenuItem {:as "a" :href "/about"} "使い方"]
+             [sa/MenuItem {:position "right"}
+              [sa/Button {:as "a" :href "/logout" :inverted true} "Logout"]]]]
            [sa/Container {:style {:marginTop "7em"}}
             [css-transition-group {:transition-name "pageChange"
                                    :transition-enter-timeout 500
