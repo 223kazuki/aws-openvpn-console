@@ -16,16 +16,24 @@
   transition: opacity 1ms ease-in;
 }
 
+.ui.container > div.transition > div {
+    position: absolute;
+}
+
 @media only screen and (max-width: 767px) {
     .ui.container {
         width: 100%;
         margin-left: 0!important;
         margin-right: 0!important;
-     }
-}
-
-.ui.container > div.transition > div {
-    position: absolute;
+    }
+    .ui.container > div.transition {
+        margin-top: -40px;
+    }
+    .ui.container > div.transition > div {
+        width: 94%;
+        margin-left: 3%!important;
+        margin-right: 3%!important;
+    }
 }
 
 @media only screen and (max-width: 991px) and (min-width: 768px) {

@@ -8,46 +8,6 @@
             [cljs.core.async :refer [timeout <!]])
   (:require-macros [cljs.core.async.macros :refer [go-loop]]))
 
-(defn homepage-heading [mobile]
-  [sa/Container {:text true}
-   [sa/Header {:as "h1" :content "Imagine-a-Company"
-               :inverted true
-               :style {:fontSize (if mobile "2em" "4em")
-                       :fontWeight "normal"
-                       :marginBottom 0
-                       :marginTop (if mobile "1.5em" "3em")}}]
-   [sa/Header {:as "h2" :content "Do whatever you want when you want to"
-               :inverted true
-               :style {:fontSize (if mobile "1.5em" "1.7em")
-                       :fontWeight "normal"
-                       :marginTop (if mobile "0.5em" "1.5em")}}]
-   [sa/Button {:primary true :size "huge"}
-    "Get Started"
-    [sa/Icon {:name "right arrow"}]]])
-
-(defn desktop-container []
-  (let [fixed? (re-frame/subscribe [::subs/menu-fixed?])]
-    [sa/Responsive (js->clj (aget (aget js/semanticUIReact "Responsive") "onlyComputer"))
-     [sa/Visibility {:once false :onBottomPassed #(re-frame/dispatch [:event/hide-fixed-menu])
-                     :onBottomPassedReverse #(re-frame/dispatch [:event/show-fixed-menu])}
-      [sa/Segment {:inverted true :textAlign "center" :vertical true
-                   :style {:minHeight 700 :padding "1em 0em"}}
-       [sa/Menu {:fixed (when @fixed? "top")
-                 :inverted (not @fixed?)
-                 :pointing (not @fixed?)
-                 :secondary (not @fixed?)
-                 :size "large"}
-        [sa/Container
-         [sa/MenuItem {:as "a" :active true} "Home"]
-         [sa/MenuItem {:as "a"} "Work"]
-         [sa/MenuItem {:as "a"} "Company"]
-         [sa/MenuItem {:as "a"} "Careers"]
-         [sa/MenuItem {:position "right"}
-          [sa/Button {:as "a" :inverted (not @fixed?)} "Log In"]
-          [sa/Button {:as "a" :inverted (not @fixed?) :primary @fixed?
-                      :style {:marginLeft "0.5em"}} "Sign Up"]]]]
-       (homepage-heading false)]]]))
-
 (defn instances-panel []
   (let [instances (re-frame/subscribe [::subs/instances])
         result (re-frame/subscribe [::subs/instance-operation-result])]
@@ -118,23 +78,9 @@
           [:div
            [sa/Menu {:fixed "top" :inverted true}
             [sa/Container
-             [sa/MenuItem {:as "a" :header true}
-              [sa/Image {:size "mini" :src "/logo.png" :style {:marginRight "1.5em"}}]
-              "Project Name"]
-             [sa/MenuItem {:as "a" :href "/"} "Home"]
-             [sa/MenuItem {:as "a" :href "/about"} "About"]
-             [sa/Dropdown {:item true :simple true :text "Dropdown"}
-              [sa/DropdownMenu
-               [sa/DropdownItem "List Item"]
-               [sa/DropdownItem "List Item"]
-               [sa/DropdownDivider]
-               [sa/DropdownItem
-                [:i.dropdown.icon]
-                [:span.text "Submenu"]
-                [sa/DropdownMenu
-                 [sa/DropdownItem "List Item"]
-                 [sa/DropdownItem "List Item"]]]
-               [sa/DropdownItem "List Item"]]]]]
+             [sa/MenuItem {:as "a" :header true  :href "/"}
+              "Opne VPN Console"]
+             [sa/MenuItem {:as "a" :href "/about"} "使い方"]]]
            [sa/Container {:style {:marginTop "7em"}}
             [css-transition-group {:transition-name "pageChange"
                                    :transition-enter-timeout 500
