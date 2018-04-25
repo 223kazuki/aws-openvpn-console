@@ -1,0 +1,34 @@
+client
+
+dev tun
+
+proto udp
+
+remote {{public-ip-address}} 1194
+
+resolv-retry infinite
+
+nobind
+
+persist-key
+persist-tun
+
+ca ./ca.crt
+cert ./client1.crt
+key ./client1.key
+
+ns-cert-type server
+
+tls-client
+tls-auth ./ta.key 1
+
+comp-lzo
+
+verb 3
+
+tun-mtu  1350
+
+tls-cipher DHE-RSA-AES256-SHA
+cipher AES-256-CBC
+keysize 256
+auth SHA256

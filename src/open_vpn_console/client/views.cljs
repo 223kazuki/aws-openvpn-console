@@ -49,13 +49,17 @@
        (homepage-heading false)]]]))
 
 (defn instances-panel []
-  (let [instances (re-frame/subscribe [::subs/instances])]
-    (println @instances)
+  (let [instances (re-frame/subscribe [::subs/instances])
+        result (re-frame/subscribe [::subs/instance-operation-result])]
     [:div
+     (when-let  [{:keys [type message]} @result]
+       (if (= type :failure)
+         [sa/Message {:as "h3" :color "red" :error true} message]
+         [sa/Message {:as "h3" :color "blue"} message]))
      [sa/Table {:celled true :style {:width "100%"}}
       [sa/TableHeader
        [sa/TableRow
-        [sa/TableHeaderCell {:width 3} "ID"]
+        [sa/TableHeaderCell {:width 4} "ID"]
         [sa/TableHeaderCell {:width 1} "Status"]
         [sa/TableHeaderCell {:width 3} "IP Address"]
         [sa/TableHeaderCell ""]]]
@@ -64,16 +68,19 @@
          [sa/TableRow {:key instance-id}
           [sa/TableCell instance-id]
           [sa/TableCell (:name state)]
-          [sa/TableCell (:public-ip-address state)]
+          [sa/TableCell public-ip-address]
           [sa/TableCell
            (if (= (:name state) "stopped")
-             [sa/Button {:primary true}
+             [sa/Button {:primary true
+                         :onClick #(re-frame/dispatch [::events/start-instance instance-id])}
               "起動"]
              (if (= (:name state) "running")
                [:div
-                [sa/Button {:primary true}
+                [sa/Button {:primary true
+                            :onClick #(re-frame/dispatch [::events/stop-instance instance-id])}
                  "停止"]
-                [sa/Button {:primary true}
+                [sa/Button {:primary true
+                            :onClick #(re-frame/dispatch [::events/download-openvpn-file instance-id])}
                  "設定ファイルダウンロード"]]))]])]]]))
 
 (defn about-panel []

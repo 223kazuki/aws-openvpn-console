@@ -15,3 +15,13 @@
  ::instances
  (fn [db]
    (:instances db)))
+
+(re-frame/reg-sub
+ ::instance-operation-result
+ (fn [db]
+   (:instance-operation-result db)))
+
+(re-frame/reg-sub
+ ::download-openvpn-file-result
+ (fn [db]
+   (:download-openvpn-file-result db)))

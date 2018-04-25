@@ -16,7 +16,9 @@
                  [bidi "2.1.3"]
                  [buddy/buddy-auth "2.1.0"]
                  [amazonica "0.3.121" :exclusions [[com.amazonaws/amazon-kinesis-client]
-                                                   [com.taoensso/encore]]]]
+                                                   [com.taoensso/encore]]]
+                 [me.raynes/fs "1.4.6"]
+                 [selmer "1.11.7"]]
   :plugins [[duct/lein-duct "0.10.6"]]
   :main ^:skip-aot open-vpn-console.main
   :uberjar-name  "open-vpn-console-standalone.jar"

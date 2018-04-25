@@ -15,12 +15,10 @@
   (session-backend {:unauthorized-handler unauthorized-handler}))
 
 (defn wrap-auth [handler]
-  #(do (println %)
-       (println (authenticated? %))
-       (if (authenticated? %)
-         (handler %)
-         {:status 401
-          :body {:message "Login required."}})))
+  #(if (authenticated? %)
+     (handler %)
+     {:status 401
+      :body {:message "Login required."}}))
 
 (defmethod ig/init-key ::wrap-auth [_ {:keys [auth-backend]}]
   (fn [handler]

@@ -2,4 +2,5 @@
 
 (def default-db
   {:active-panel :none
+   :instance-operation-result nil
    :instances nil})
