@@ -42,19 +42,30 @@
                                         (filter #(= (:instance-id %) instance-id))
                                         first
                                         :public-ip-address)]
-      (let [output (io/file (fs/tmpdir) "openvpn.zip")]
-        (->> ["ca.crt" "client1.crt" "client1.key" "ta.key" "myvpn.ovpn.template"]
-             (map #(str "openvpn/" %))
-             (map io/resource)
-             (filter identity)
-             (map (fn [r]
-                    (if (str/ends-with? (.getAbsolutePath (io/file r)) ".template")
-                      (let [out (io/file (fs/tmpdir) (str/join "." (butlast (str/split (.getName (io/file r)) #"\."))))]
-                        (spit out (render-file r {:public-ip-address public-ip-address}))
-                        out)
-                      (io/file r))))
-             (map #(let [name (.getName %) content (slurp %)]
-                     [name content]))
-             (zip output))
-        (file-response (.getAbsolutePath output)))
+      (let [output (io/file (fs/tmpdir) "openvpn.zip")
+            resources
+            (->> ["ca.crt" "client1.crt" "client1.key" "ta.key" "myvpn.ovpn.template"]
+                 (map #(str "openvpn/" %))
+                 (map io/resource)
+                 (filter identity)
+                 (map (fn [r]
+                        (if (str/ends-with? (.getPath r) ".template")
+                          (let [out (io/file (fs/tmpdir) (as-> (.getPath r) $
+                                                           (str/split $ #"/")
+                                                           (last $)
+                                                           (str/split $ #"\.")
+                                                           (butlast $)
+                                                           (str/join "." $)))]
+                            (spit out (render-file r {:public-ip-address public-ip-address}))
+                            out) r)))
+                 (map #(let [name (-> (.getPath %)
+                                      (str/split #"/")
+                                      last)
+                             content (slurp %)]
+                         [name content])))]
+        (if (zero? (count resources))
+          [::response/no-content]
+          (do
+            (zip output resources)
+            (file-response (.getAbsolutePath output)))))
       [::response/no-content])))
